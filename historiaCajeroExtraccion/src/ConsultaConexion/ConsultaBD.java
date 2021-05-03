@@ -46,9 +46,6 @@ public class ConsultaBD {
             try{    
                 if(realizado(codUsu,almacenaMontoActual)){
                         res=true;
-
-                    }else{
-                        System.out.print("no echo");
                     }
             }catch(Exception ex){
                 System.out.println(ex.toString());
