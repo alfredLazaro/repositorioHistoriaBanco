@@ -15,16 +15,20 @@ import java.sql.Statement;
  */
 public class ConsultaBD {
  
-    public static void retiroDeDinero(int cant,int codSis){
+    public static boolean retiroDeDinero(int cant,int codUsu){
+        boolean res=false;
+        int almacenaMontoActual=obtenerMontoActual(codUsu);
         try{
             Statement sql = ConexionSQL.getConnetion().createStatement();
+            
            
-           String consulta = "begin TRANSACTION retiroDeDinero \n" +
+           String consulta =
+                            "begin TRANSACTION retiroDeDinero \n" +
                                 "\n" +
-                            "    DECLARE @saldo int  \n"+ 
-                                "    SELECT  @saldo = pago \n" +
-                            "    FROM Umss.dbo.Inscripciones \n" +
-                            "    WHERE codSis="+ codSis + " \n" +
+                            "    DECLARE @saldo int=0  \n"+
+                            "    SELECT  @saldo = montoTotal \n" +
+                            "    FROM Banco.dbo.Cuenta \n" +
+                            "    WHERE codUsu="+ codUsu + " \n" +
                             "    \n" +
                             "    IF (@saldo<"+ cant +") \n" +
                             "        BEGIN \n" +
@@ -33,21 +37,74 @@ public class ConsultaBD {
                             "        \n" +
                             "    else \n" +
                             "        BEGIN \n" +
-                            "            UPDATE Umss.dbo.Inscripciones SET pago= pago -"+ cant +" \n" +
+                            "            UPDATE Banco.dbo.Cuenta SET montoTotal= montoTotal -"+ cant +" \n" +
                             "            COMMIT; \n" +
                             "        END \n ";
-                            
+            sql.executeQuery(consulta);
+           
+        }catch(SQLException e){
+            try{    
+                if(realizado(codUsu,almacenaMontoActual)){
+                        res=true;
+
+                    }else{
+                        System.out.print("no echo");
+                    }
+            }catch(Exception ex){
+                System.out.println(ex.toString());
+            }
+        }
+        
+        return res;
+    }
+    
+    private  static boolean realizado(int codUsu,int actual) {
+       boolean res=false;
+       try{
+           int resulCon=0;
+           Statement sql = ConexionSQL.getConnetion().createStatement();
+           
+           String consulta = " SELECT montoTotal "
+                            +" FROM Banco.dbo.Cuenta"
+                            +" WHERE  codUsu="+ codUsu;
            
            ResultSet resultado = sql.executeQuery(consulta);
            if(resultado.next()){
-               System.out.print(resultado.toString());
+               resulCon=resultado.getInt(1);
+               if(resulCon==actual){
+                   res=false;
+               }else{
+                   res=true;
+               }
            }
+            
+       }catch(SQLException e){
+           System.out.print(e.toString());
+       }
+       
+       
+       return res; 
+    }
+    
+    public static int obtenerMontoActual(int codUsu) {
+       int res=0;
+        try{
+           Statement sql = ConexionSQL.getConnetion().createStatement();
            
-        }catch(SQLException e){
-            System.out.println(e.toString());
-        }
-        
-        
+           String consulta = " SELECT montoTotal "
+                            +" FROM Banco.dbo.Cuenta"
+                            +" WHERE  codUsu="+ codUsu;
+           
+           ResultSet resultado = sql.executeQuery(consulta);
+           if(resultado.next()){
+               res=resultado.getInt(1);
+           }
+            
+       }catch(SQLException e){
+           System.out.print(e.toString());
+       }
+       
+       return res;
     }
     
     public boolean validadUsuarioContrasenia(int codUsuario,String contrUsu){
@@ -56,8 +113,8 @@ public class ConsultaBD {
             Statement sql = ConexionSQL.getConnetion().createStatement();
            
            String consulta = " SELECT * "
-                            +" FROM usuario"
-                            +" WHERE  codUsuario="+codUsuario +" and  contraUs="+ contrUsu;
+                            +" FROM Banco.dbo.usuario"
+                            +" WHERE  codUsu="+ codUsuario +" and  contraUs="+ contrUsu;
            
            ResultSet resultado = sql.executeQuery(consulta);
            if(resultado.next()){
@@ -71,6 +128,25 @@ public class ConsultaBD {
        
        return res;     
     }
+    
+    public static void agregarAlRecibo(int codUsu,String fecha,String nombUs,
+            String apPat,String apMat,int montoRetirado,int montoActual){
+        
+        try{
+             Statement sql = ConexionSQL.getConnetion().createStatement();
+           
+           String consulta = "insert into Banco.dbo.Recibo([codUsu],[fechAct],[nombUs],"
+                        + "[apPat],[apMat],[montoRetirado],[montoAct])\n" +
+                           " values ("+ codUsu +",'" + fecha +"','"+ nombUs +"',"
+                            + "'"+apPat +"','"+apMat +"',"+montoRetirado +","+montoActual +")";
+          sql.executeQuery(consulta);
+             
+        }catch(SQLException e){
+            System.out.print(e.toString());
+        }
+        
+    }
+    
     
     
 }
