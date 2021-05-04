@@ -5,19 +5,55 @@
  */
 package Vista;
 
+import ConsultaConexion.ConsultaBD;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author javier
  */
 public class RetiroDinero extends javax.swing.JFrame {
-
+    private int codUs = -1;
+    private Calendar fechas = Calendar.getInstance();
     /**
      * Creates new form RetiroDinero
      */
     public RetiroDinero() {
         initComponents();
+        deshabilitarElem();
+        //cargarInfo();
+    }
+    public RetiroDinero(int codUs) {
+        this.codUs = codUs;
+        initComponents();
+        deshabilitarElem();
+        cargarInfo();
+    }
+    
+    private void deshabilitarElem(){
+        txtFie_codUs.setEditable(false);
+        txtFie_fecha.setEditable(false);
+        txtFie_montoAct.setEditable(false);
+    }
+    
+    private void vaciarInfo(){
+        txtFie_codUs.setText("");
+        txtFie_fecha.setText("");
+        txtFie_montoAct.setText("");
     }
 
+     private void cargarInfo(){
+        txtFie_montoAct.setText(ConsultaBD.obtenerMontoActual(codUs)+"");
+        
+        int dia = fechas.get(Calendar.DAY_OF_MONTH);
+        int mes = fechas.get(Calendar.MONTH)+1;
+        int anio = fechas.get(Calendar.YEAR);
+        String fecha = dia+"/"+mes+"/"+anio;
+        txtFie_fecha.setText(fecha);
+        
+        txtFie_codUs.setText(codUs+"");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +89,11 @@ public class RetiroDinero extends javax.swing.JFrame {
         });
 
         btnRetirar.setText("Hacer Retiro");
+        btnRetirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Monto a retirar:");
@@ -181,7 +222,7 @@ public class RetiroDinero extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -192,8 +233,14 @@ public class RetiroDinero extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFie_montoRetirarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        vaciarInfo();
+        JOptionPane.showMessageDialog(null, "Retiro Cancelado");
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRetirarActionPerformed
 
     /**
      * @param args the command line arguments

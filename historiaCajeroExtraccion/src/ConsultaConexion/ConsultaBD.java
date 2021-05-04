@@ -8,6 +8,7 @@ package ConsultaConexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -144,6 +145,28 @@ public class ConsultaBD {
         
     }
     
+    public static ArrayList<String> transacciones(int codUsuario){
+        ArrayList<String> res = new ArrayList<>();
+        try{
+            Statement sql = ConexionSQL.getConnetion().createStatement();
+           
+           String consulta = " SELECT fechAct,montoRetirado,montoAct "
+                            +" FROM Banco.dbo.Recibo"
+                            +" WHERE  codUsu="+ codUsuario ;
+           
+           ResultSet resultado = sql.executeQuery(consulta);
+           if(resultado.next()){
+               res.add("Fecha: "+resultado.getString(1)
+                       +"| Monto Retirado: "+resultado.getInt(2)
+                       +"| Saldo Resultado: "+resultado.getInt(3));
+           }
+            
+        }catch(SQLException e ){
+            System.out.print(e.toString());
+        
+        }
+        return res;
+    }
     
     
 }
