@@ -103,9 +103,9 @@ public class MenuUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroActionPerformed
-        RetiroDinero retiro = new RetiroDinero(codUs);
+        //RetiroDinero retiro = new RetiroDinero(codUs);
         //this.dispose();
-        retiro.setVisible(true);
+        //retiro.setVisible(true);
     }//GEN-LAST:event_btnRetiroActionPerformed
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
