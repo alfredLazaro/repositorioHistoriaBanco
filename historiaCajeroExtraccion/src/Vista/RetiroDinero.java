@@ -5,17 +5,28 @@
  */
 package Vista;
 
+import ConsultaConexion.ConsultaBD;
+import java.util.Calendar;
+
 /**
  *
  * @author javier
  */
 public class RetiroDinero extends javax.swing.JFrame {
-
-    /**
-     * Creates new form RetiroDinero
-     */
+    
+    private String contraSe;
+    String fechaActual;
+    private ConsultaBD consulta;
     public RetiroDinero() {
         initComponents();
+        Calendar fechas = Calendar.getInstance();
+        int dia = fechas.get(Calendar.DAY_OF_MONTH);
+        int mes = fechas.get(Calendar.MONTH)+1;
+        int anio = fechas.get(Calendar.YEAR);
+        String fecha = dia+"/"+mes+"/"+anio;
+        txtFie_fecha.setText(fecha);
+        txtFie_fecha.setEditable(false);
+        txtFie_montoAct.setEditable(false);
     }
 
     /**
@@ -31,7 +42,7 @@ public class RetiroDinero extends javax.swing.JFrame {
         txtFie_montoRetirar = new javax.swing.JTextField();
         btnRetirar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jlblTitulo = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -43,6 +54,7 @@ public class RetiroDinero extends javax.swing.JFrame {
         txtFie_fecha = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
+        jlblAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,12 +65,17 @@ public class RetiroDinero extends javax.swing.JFrame {
         });
 
         btnRetirar.setText("Hacer Retiro");
+        btnRetirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Monto a retirar:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("Retiro de Dinero");
+        jlblTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jlblTitulo.setText("Retiro de Dinero");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Bs.");
@@ -91,15 +108,18 @@ public class RetiroDinero extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtFie_montoRetirar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3))
+                    .addComponent(jlblAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -127,7 +147,7 @@ public class RetiroDinero extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(jlblTitulo)
                                 .addGap(106, 106, 106))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnCancelar)
@@ -139,14 +159,18 @@ public class RetiroDinero extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jLabel2)
+                .addComponent(jlblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtFie_montoRetirar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlblAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -188,12 +212,27 @@ public class RetiroDinero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtFie_montoRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFie_montoRetirarActionPerformed
-        // TODO add your handling code here:
+        int monto=Integer.parseInt(txtFie_montoRetirar.getText());
+        int codUs=Integer.parseInt(txtFie_codUs.getText());
+        
+        if(consulta.retiroDeDinero(monto, codUs)){
+            int montoActual=consulta.obtenerMontoActual(codUs);
+            txtFie_montoAct.setText(montoActual+"");
+            jlblAviso.setText("se realizo el retiro");
+        }else{
+            jlblAviso.setText("no se pudo realizar el retiro");
+            int montoActual=consulta.obtenerMontoActual(codUs);
+            txtFie_montoAct.setText(montoActual+"");
+        }
     }//GEN-LAST:event_txtFie_montoRetirarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRetirarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,7 +273,6 @@ public class RetiroDinero extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRetirar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -243,6 +281,8 @@ public class RetiroDinero extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jlblAviso;
+    private javax.swing.JLabel jlblTitulo;
     private javax.swing.JTextField txtFie_codUs;
     private javax.swing.JTextField txtFie_fecha;
     private javax.swing.JTextField txtFie_montoAct;

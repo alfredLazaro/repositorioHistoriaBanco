@@ -111,7 +111,7 @@ public class ConsultaBD {
            
            String consulta = " SELECT * "
                             +" FROM Banco.dbo.usuario"
-                            +" WHERE  codUsu="+ codUsuario +" and  contraUs="+ contrUsu;
+                            +" WHERE  codUsu="+ codUsuario +" and  contraUs='"+ contrUsu+"'";
            
            ResultSet resultado = sql.executeQuery(consulta);
            if(resultado.next()){

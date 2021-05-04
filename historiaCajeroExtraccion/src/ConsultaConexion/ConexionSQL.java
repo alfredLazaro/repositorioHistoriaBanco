@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class ConexionSQL {
     public static Connection getConnetion(){
         String conexionURL = "jdbc:sqlserver://localhost:1433;"
-                + "database=Umss;" 
+                + "database=Banco;" 
                 + "user=alfred;"
                 + "password=alfred123;" //contraseña de usuario sa
                 + "loginTimeout=30;";
