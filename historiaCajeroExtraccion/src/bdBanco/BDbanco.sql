@@ -58,6 +58,7 @@ INSERT INTO Cuenta([montoTotal]) VALUES(6987522),(6550453),(2357756),(5465022),(
 
 select * from Cuenta
 --tabla de recibos
+select * from cuenta where codUsu=311122777
 
 create table Recibo(
 	[codUsu] Integer not null,

@@ -7,6 +7,8 @@ package Vista;
 
 import ConsultaConexion.ConsultaBD;
 import java.util.Calendar;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,8 +18,10 @@ public class RetiroDinero extends javax.swing.JFrame {
     
     private String contraSe;
     String fechaActual;
+    int codUsu=-1;
     private ConsultaBD consulta;
     public RetiroDinero() {
+        
         initComponents();
         Calendar fechas = Calendar.getInstance();
         int dia = fechas.get(Calendar.DAY_OF_MONTH);
@@ -212,18 +216,7 @@ public class RetiroDinero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtFie_montoRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFie_montoRetirarActionPerformed
-        int monto=Integer.parseInt(txtFie_montoRetirar.getText());
-        int codUs=Integer.parseInt(txtFie_codUs.getText());
         
-        if(consulta.retiroDeDinero(monto, codUs)){
-            int montoActual=consulta.obtenerMontoActual(codUs);
-            txtFie_montoAct.setText(montoActual+"");
-            jlblAviso.setText("se realizo el retiro");
-        }else{
-            jlblAviso.setText("no se pudo realizar el retiro");
-            int montoActual=consulta.obtenerMontoActual(codUs);
-            txtFie_montoAct.setText(montoActual+"");
-        }
     }//GEN-LAST:event_txtFie_montoRetirarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -231,7 +224,24 @@ public class RetiroDinero extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
-        // TODO add your handling code here:
+        int monto=Integer.parseInt(txtFie_montoRetirar.getText());
+        int codUs=Integer.parseInt(txtFie_codUs.getText());
+        consulta=new ConsultaBD();
+        if(consulta.retiroDeDinero(monto, codUs)){
+            int montoActual=consulta.obtenerMontoActual(codUs);
+            String[] nomb=consulta.reciboShow(codUsu);
+            consulta.agregarAlRecibo(codUs, fechaActual, nomb[1], nomb[2], nomb[3], monto, montoActual);
+            txtFie_montoAct.setText(montoActual+"");
+            //jlblAviso.setText("se realizo el retiro");
+            JOptionPane.showMessageDialog(this, "se realizo el retiro con exito");
+            System.out.println("se pudo");
+        }else{
+            //jlblAviso.setText("no se pudo realizar el retiro");
+            int montoActual=consulta.obtenerMontoActual(codUs);
+            txtFie_montoAct.setText(montoActual+"");
+            JOptionPane.showMessageDialog(this, "no se realizo la transaccion");
+            System.out.println("no se pudo");
+        }
     }//GEN-LAST:event_btnRetirarActionPerformed
 
     /**

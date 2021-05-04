@@ -16,7 +16,8 @@ public class HistoriaCajeroExtraccion {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ConsultaConexion.ConsultaBD.retiroDeDinero(17,200022009);
+        //ConsultaConexion.ConsultaBD.retiroDeDinero(17,200022009);
+        ConsultaConexion.ConsultaBD.retiroDeDinero(500,311122777);
     }
     
 }

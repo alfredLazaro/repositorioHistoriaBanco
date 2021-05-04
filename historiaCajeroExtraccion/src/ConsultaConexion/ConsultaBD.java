@@ -104,7 +104,7 @@ public class ConsultaBD {
        return res;
     }
     
-    public boolean validadUsuarioContrasenia(int codUsuario,String contrUsu){
+    public static boolean validadUsuarioContrasenia(int codUsuario,String contrUsu){
         boolean res=false;
         try{
             Statement sql = ConexionSQL.getConnetion().createStatement();
@@ -144,6 +144,26 @@ public class ConsultaBD {
         
     }
     
-    
+    public static String [] reciboShow(int codUsu){
+        String res []=new String [4];
+        try{
+            Statement sql= ConexionSQL.getConnetion().createStatement();
+            String consulta="SELECT codUsu,nombUs,apPat,apMat "
+                            + " FROM Banco.dbo.Usuario "
+                            + " WHERE codUsu="+ codUsu +"";
+            ResultSet respuesta=sql.executeQuery(consulta);
+            if (respuesta.next()){
+                res[0]=respuesta.getString(1);
+                res[1]=respuesta.getString(2);
+                res[2]=respuesta.getString(3);
+                res[3]=respuesta.getString(4);
+                System.out.print(res[0]+","+res[1]+","+res[2]+","+res[3]);
+            }
+        }catch(SQLException e){
+            System.out.println(e.toString());
+        }
+        
+        return res;
+    }
     
 }
