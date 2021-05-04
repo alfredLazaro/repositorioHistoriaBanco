@@ -5,6 +5,7 @@
  */
 package Vista;
 import ConsultaConexion.ConsultaBD;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -113,10 +114,19 @@ public class LoginANDpassword extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        int codUs = Integer.parseInt(txtFie_codUs.getText());
-        String contra = txtFie_contra.getText();
-        if(conexion.validadUsuarioContrasenia(codUs, contra)){
+        try{
+            int codUs = Integer.parseInt(txtFie_codUs.getText());
+            String contra = txtFie_contra.getText();
+            if(conexion.validadUsuarioContrasenia(codUs, contra)){
+                MenuUsuario menu = new MenuUsuario(codUs);
+                this.dispose();
+                menu.setVisible(true);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error en el codUsuario");
         }
+       
+        
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
