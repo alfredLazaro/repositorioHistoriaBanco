@@ -18,7 +18,6 @@ public class RetiroDinero extends javax.swing.JFrame {
     
     private String contraSe;
     String fechaActual;
-    int codUsu=-1;
     private ConsultaBD consulta;
     public RetiroDinero() {
         
@@ -226,11 +225,12 @@ public class RetiroDinero extends javax.swing.JFrame {
     private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
         int monto=Integer.parseInt(txtFie_montoRetirar.getText());
         int codUs=Integer.parseInt(txtFie_codUs.getText());
+        String fechAc=txtFie_fecha.getText();
         consulta=new ConsultaBD();
         if(consulta.retiroDeDinero(monto, codUs)){
             int montoActual=consulta.obtenerMontoActual(codUs);
-            String[] nomb=consulta.reciboShow(codUsu);
-            consulta.agregarAlRecibo(codUs, fechaActual, nomb[1], nomb[2], nomb[3], monto, montoActual);
+            String[] nomb=consulta.reciboShow(codUs);
+            consulta.agregarAlRecibo(codUs, fechAc, nomb[1], nomb[2], nomb[3], monto, montoActual);
             txtFie_montoAct.setText(montoActual+"");
             //jlblAviso.setText("se realizo el retiro");
             JOptionPane.showMessageDialog(this, "se realizo el retiro con exito");

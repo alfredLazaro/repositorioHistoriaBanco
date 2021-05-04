@@ -5,19 +5,50 @@
  */
 package Vista;
 
+import ConsultaConexion.ConsultaBD;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author MAURICIO
  */
 public class TransaccionesCuenta extends javax.swing.JFrame {
-
+    private int codUs = -1;
     /**
      * Creates new form TransaccionesCuenta
      */
     public TransaccionesCuenta() {
         initComponents();
     }
-
+    public TransaccionesCuenta(int codUs) {
+        initComponents();
+        this.codUs = codUs;
+        limpiarJL();
+        llenarTransacciones();
+    }
+    
+    public DefaultListModel limpiarJL(){
+        DefaultListModel modelo = new DefaultListModel();
+        
+        jlTransacciones.setModel(modelo);
+        
+        return modelo;
+    }
+    
+    private void llenarTransacciones(){
+        ArrayList<String> transacc;
+        transacc = ConsultaBD.transacciones(codUs);
+        //int cont = 20;
+        if(!transacc.isEmpty()){
+        DefaultListModel modelo = (DefaultListModel) jlTransacciones.getModel();
+        for(String ac:transacc ){
+            modelo.addElement(ac);
+            //transacc.remove(0);
+            //cont--;
+        }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,8 +60,8 @@ public class TransaccionesCuenta extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        jlTransacciones = new javax.swing.JList<>();
+        btnSalir = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -38,12 +69,12 @@ public class TransaccionesCuenta extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Transacciones Realizadas");
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jlTransacciones);
 
-        jButton1.setText("Salir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -67,7 +98,7 @@ public class TransaccionesCuenta extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(78, 78, 78))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnSalir)
                                 .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -83,16 +114,16 @@ public class TransaccionesCuenta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnSalir)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,10 +161,10 @@ public class TransaccionesCuenta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> jlTransacciones;
     // End of variables declaration//GEN-END:variables
 }
